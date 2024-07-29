@@ -50,6 +50,10 @@ class ComposerStaticInit72f12453a35a612dd9af060b3b03391e
             'Psr\\Container\\' => 14,
             'Psr\\Clock\\' => 10,
         ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
+        ),
         'I' => 
         array (
             'Illuminate\\Support\\' => 19,
@@ -161,11 +165,15 @@ class ComposerStaticInit72f12453a35a612dd9af060b3b03391e
         array (
             0 => __DIR__ . '/..' . '/psr/clock/src',
         ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
         'Illuminate\\Support\\' => 
         array (
-            0 => __DIR__ . '/..' . '/illuminate/conditionable',
-            1 => __DIR__ . '/..' . '/illuminate/macroable',
-            2 => __DIR__ . '/..' . '/illuminate/collections',
+            0 => __DIR__ . '/..' . '/illuminate/collections',
+            1 => __DIR__ . '/..' . '/illuminate/conditionable',
+            2 => __DIR__ . '/..' . '/illuminate/macroable',
             3 => __DIR__ . '/..' . '/illuminate/support',
         ),
         'Illuminate\\Database\\' => 
