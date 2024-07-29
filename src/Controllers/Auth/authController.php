@@ -8,12 +8,13 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Firebase\JWT\JWT;
 
 class AuthController {
-    private $secretKey = 'secreta'; // Substitua por uma chave secreta mais segura
+    private $secretKey = 'secreta';
 
-    public function register(Request $request, Response $response, $args) {
-        $data = $request->getParsedBody(); // Método PSR-7 para obter o corpo da requisição
+    public function register(Request $request, Response $response) {
+       
+        $data = $request->getParsedBody();
 
-        $name = $data['name'] ?? '';
+        $name = $data['full_name'] ?? '';
         $email = $data['email'] ?? '';
         $password = $data['password'] ?? '';
 
@@ -25,7 +26,7 @@ class AuthController {
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
         Capsule::table('users')->insert([
-            'name' => $name,
+            'full_name' => $name,
             'email' => $email,
             'password' => $passwordHash
         ]);
@@ -35,7 +36,7 @@ class AuthController {
     }
 
     public function login(Request $request, Response $response, $args) {
-        $data = $request->getParsedBody(); // Método PSR-7 para obter o corpo da requisição
+        $data = $request->getParsedBody();
 
         $email = $data['email'] ?? '';
         $password = $data['password'] ?? '';
@@ -53,3 +54,4 @@ class AuthController {
         return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
 }
+

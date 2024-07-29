@@ -1,0 +1,1 @@
+[2024-07-29T00:48:45.701012+02:00] app.INFO: Request {"method":"GET","uri":"http://localhost/crud-usuarios/public/hello"} []
