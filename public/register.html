@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Usuários</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Formulário de Cadastro</h1>
+    </header>
+        <section>
+            <form action="/auth/register" method="post" enctype="multipart/form-data">
+            <label for="full_name">Nome Completo:</label>
+            <input type="text" name="full_name" id="full_name">
+            <label for="email">E-mail:</label>
+            <input type="email" name="email" id="idemail">
+            <label for="password">Crie uma senha:</label>
+            <input type="password" name="password" id="idpassword">
+            <label for="bio">Fale sobre você:</label>
+            <input type="text" name="bio" id="idbio">
+            <label for="profile_image">Imagem de Perfil:</label>
+            <input type="file" name="profile_image" id="profile_image" accept="image/*" required>
+            <input type="submit" value="Criar Conta" >
+            <input type="button" value="Voltar" onclick="window.location.href='index.html'">
+            </form>
+        </section>
+    
+</body>
+</html>
