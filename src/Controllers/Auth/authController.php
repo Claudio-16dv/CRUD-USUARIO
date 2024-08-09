@@ -52,8 +52,7 @@ class AuthController {
             'profile_image' => $filename
         ]);
 
-        $response->getBody()->write(json_encode(['message' => 'Usuário registrado com sucesso']));
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
+        return $response->withHeader('Location', '/index.html')->withStatus(302);
     }
 
     public function login(Request $request, Response $response, $args) {
@@ -71,8 +70,7 @@ class AuthController {
 
         $token = JWT::encode(['sub' => $user->id], $this->secretKey, 'HS256');
 
-        $response->getBody()->write(json_encode(['token' => $token]));
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+        return $response->withHeader('Location', '/home.html')->withStatus(302);
     }
 }
 

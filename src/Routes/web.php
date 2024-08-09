@@ -15,5 +15,16 @@ $app->group('/user', function(RouteCollectorProxy $group){
     $group->post('/getUserById', [UserController::class, 'getUserById']);
 });
 
+$app->get('/page/{name}', function ($request, $response, $args) {
+    $page = $args['name'];
 
+    $file = __DIR__ . '/../public/' . $page . '.html';
+
+    if (file_exists($file)) {
+        $response->getBody()->write(file_get_contents($file));
+        return $response->withHeader('Content-Type', 'text/html');
+    } else {
+        return $response->withStatus(404)->write('Page not found');
+    }
+});
 
