@@ -243,3 +243,35 @@ input[type=radio] + label, input[type=checkbox] + label {
     font-size: 1em;
     background-color: rgba(0, 0, 0, 0);
 }
+
+/* Estilos para a exibição dos detalhes do usuário */
+.user-info {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.user-info ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-info li {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.user-info li strong {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Adicionalmente, você pode adicionar estilos responsivos */
+@media (max-width: 600px) {
+    .user-info li {
+        font-size: 14px;
+    }
+}
+

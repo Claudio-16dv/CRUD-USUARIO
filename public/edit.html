@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Dados</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Editar Dados</h1>
+    </header>
+        <section>
+            <form action="/user/updateUserById" method="post" enctype="multipart/form-data">
+            <label for="id">Informe o id do usuário:</label>
+            <input type="number" name="id" id="iduser">
+            <label for="bio">Escreva sobre você:</label>
+            <input type="text" name="bio" id="idbio">
+            <label for="profile_image">Imagem de Perfil:</label>
+            <input type="file" name="profile_image" id="profile_image" accept="image/*" required>
+            <input type="submit" value="Alterar">
+            </form>
+        </section>
+
+</body>
+</html>

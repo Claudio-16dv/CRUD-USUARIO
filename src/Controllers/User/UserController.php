@@ -4,113 +4,51 @@ namespace App\Controllers\User;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Illuminate\Database\Capsule\Manager as Capsule;
+use App\Services\UserService;
 
 
 class UserController {
+    
+    protected $userService;
 
+    public function __construct() {
+        $this->userService = new UserService();
+    }
 
     public function deleteUserById(Request $request, Response $response) {
         $data = $request->getParsedBody();
-    
         $id = $data['id'] ?? null;
-    
-        if (!$id) {
-            $response->getBody()->write(json_encode(['error' => 'ID do usuário não fornecido']));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-        }
-    
-        $user = Capsule::table('users')->where('id', $id)->first();
-    
-        if (!$user) {
-            $response->getBody()->write(json_encode(['error' => 'Usuário não encontrado']));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
-        }
-    
-        Capsule::table('users')->where('id', $id)->delete();
-    
-        $response->getBody()->write(json_encode(['message' => 'Usuário deletado com sucesso']));
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+        $result = $this->userService->deleteUserById($id);
+
+        $response->getBody()->write(json_encode(['message' => $result['message'] ?? $result['error']]));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($result['status']);
     }
+
     public function updateUserById(Request $request, Response $response, $args) {
         $data = $request->getParsedBody();
-        
         $id = $data['id'] ?? null;
         $bio = $data['bio'] ?? null;
-    
-        // Verifica se há arquivos enviados na requisição
         $uploadedFiles = $request->getUploadedFiles();
         $profileImage = $uploadedFiles['profile_image'] ?? null;
     
-        if ($id === null) {
-            $response->getBody()->write(json_encode(['error' => 'ID do usuário não fornecido']));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-        }
+        $result = $this->userService->updateUserById($id, $bio, $profileImage);
     
-        if ($bio === null && $profileImage === null) {
-            $response->getBody()->write(json_encode(['error' => 'É necessário fornecer a bio ou a imagem de perfil para atualizar']));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-        }
-    
-        $user = Capsule::table('users')->where('id', $id)->first();
-        if (!$user) {
-            $response->getBody()->write(json_encode(['error' => 'Usuário não encontrado']));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
-        }
-    
-        $updateData = [];
-    
-        if ($bio !== null) {
-            $updateData['bio'] = $bio;
-        }
-    
-        if ($profileImage && $profileImage->getError() === UPLOAD_ERR_OK) {
         
-            $uploadDirectory = __DIR__ . '/../uploads';
-            if (!is_dir($uploadDirectory)) {
-                mkdir($uploadDirectory, 0777, true);
-            }
-    
-            // Gera um nome de arquivo único para a nova imagem
-            $filename = sprintf('%s.%s', uniqid(), pathinfo($profileImage->getClientFilename(), PATHINFO_EXTENSION));
-            $filepath = $uploadDirectory . DIRECTORY_SEPARATOR . $filename;
-    
-            $profileImage->moveTo($filepath);
-    
-            $updateData['profile_image'] = $filename;
-    
-            if ($user->profile_image) {
-                $oldFilepath = $uploadDirectory . DIRECTORY_SEPARATOR . $user->profile_image;
-                if (file_exists($oldFilepath)) {
-                    unlink($oldFilepath);
-                }
-            }
+        if ($result['status'] === 200) {
+            return $response->withHeader('Location', '/home.php')->withStatus(302);
         }
     
-        Capsule::table('users')->where('id', $id)->update($updateData);
-    
-        $response->getBody()->write(json_encode(['message' => 'Perfil atualizado com sucesso']));
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+        $response->getBody()->write(json_encode(['message' => $result['message'] ?? $result['error']]));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($result['status']);
     }
 
     public function getUserById(Request $request, Response $response){
         $data = $request->getParsedBody();
-
-        
         $userId = $data['id'] ?? '';
+        $result = $this->userService->getUserById($userId);
 
-        
-        $user = Capsule::table('users')->where('id', $userId)->first();
-
-        
-        if (!$user) {
-            
-            $response->getBody()->write(json_encode(['error' => 'Usuário não encontrado']));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
-        }
-
-        
-        $response->getBody()->write(json_encode($user));
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
-        }
+        $response->getBody()->write(json_encode($result['data'] ?? ['error' => $result['error']]));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($result['status']);
+    }
 
 }
