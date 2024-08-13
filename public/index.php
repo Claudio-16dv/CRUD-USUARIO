@@ -7,7 +7,11 @@ use Slim\Middleware\BodyParsingMiddleware;
 use Slim\Exception\HttpNotFoundException;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Dotenv\Dotenv;
 
+//requireonce dirname(DIR, 1) . '/vendor/autoload.php';
+$dotenv = Dotenv::createImmutable(dirname(__DIR__."/public"));
+$dotenv->load();
 $app = AppFactory::create();
 
 // Adiciona o middleware para parsing do corpo da requisição
@@ -16,12 +20,12 @@ $app->addBodyParsingMiddleware();
 // Configuração do Eloquent para conexão com o MySQL
 $capsule = new Capsule;
 $capsule->addConnection([
-    'driver'    => 'mysql',
-    'host'      => '127.0.0.1',
-    'database'  => 'cadastro',
-    'username'  => 'root',
-    'password'  => '1111',
-    'charset'   => 'utf8',
+    'driver'    => $_ENV['DRIVER'],
+    'host'      => $_ENV['HOST'],
+    'database'  => $_ENV['DATABASE'],
+    'username'  => $_ENV['USERNAME'],
+    'password'  => $_ENV['PASSWORD'],
+    'charset'   => $_ENV['CHARSET'],
 ]);
 
 $capsule->setAsGlobal();

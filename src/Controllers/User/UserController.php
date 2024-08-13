@@ -3,7 +3,7 @@ namespace App\Controllers\User;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Illuminate\Database\Capsule\Manager as Capsule;
+
 use App\Services\UserService;
 
 
@@ -12,13 +12,12 @@ class UserController {
     protected $userService;
 
     public function __construct() {
-        $this->userService = new UserService();
+        $this->userService = New UserService();
     }
 
     public function deleteUserById(Request $request, Response $response) {
-        $data = $request->getParsedBody();
-        $id = $data['id'] ?? null;
-        $result = $this->userService->deleteUserById($id);
+    
+        $result = $this->userService->deleteUserById($request);
 
         $response->getBody()->write(json_encode(['message' => $result['message'] ?? $result['error']]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus($result['status']);

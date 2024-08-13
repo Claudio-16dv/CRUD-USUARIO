@@ -52,7 +52,10 @@ class UserService{
     }
 
 
-    public function deleteUserById($id) {
+    public function deleteUserById($request) {
+        $data = $request->getParsedBody();
+        $id = $data['id'] ?? null;
+
         if (!$id) {
             return ['error' => 'ID do usuário não fornecido', 'status' => 400];
         }
